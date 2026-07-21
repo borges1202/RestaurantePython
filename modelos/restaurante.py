@@ -1,6 +1,5 @@
 from modelos.avaliacao import Avaliacao
 
-
 class Restaurante:
     restaurante_list = []
 
@@ -60,8 +59,11 @@ class Restaurante:
         self._status = not self._status
         
     def assessment(self, client, notation):
-         assessment = Avaliacao(client, notation)
-         self._assessment_list.append(assessment)
+        if notation < 0 or notation > 5:
+            raise ValueError('Coloque um valor válido')
+        else:
+            assessment = Avaliacao(client, notation)
+            self._assessment_list.append(assessment)
 
     
     def average(self):

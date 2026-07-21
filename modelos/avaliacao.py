@@ -29,7 +29,7 @@ class Avaliacao():
     @staticmethod
     def average_rating(self):
         if not self._assessment_list:
-            return 0
+            return '-'
         else:
             average = sum(avaliacao.notation for avaliacao in self._assessment_list)/len(self._assessment_list)
         return round(average,1)
