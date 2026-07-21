@@ -1,42 +1,26 @@
+from modelos.avaliacao import Avaliacao
+
+
 class Restaurante:
     restaurante_list = []
 
-    def __init__(self, name='', category=''):
-        self._name = name.title()
-        self._category = category.title()
+    def __init__(self, name, category):
+        self.name = name
+        self.category = category
         self._status = False
+        self._assessment_list = []
         Restaurante.restaurante_list.append(self)
 
     def __str__(self):
-        self._name = self._name or 'Sem informação'
-        self._category = self._category or 'Sem informação'
+        str_name = self._name or 'Sem informação'
+        str_category = self._category or 'Sem informação'
 
-        return f'{self.name} | {self.category} | {self.status}'
-
-    @classmethod
-    def list_restaurantes(cls):
-        for i in cls.restaurante_list:
-            i._name = i._name or 'Sem informação'
-            i._category = i._category or 'Sem informação'
-
-            print(
-                f"Restaurante: {i.name} | "
-                f"Categoria: {i.category} | "
-                f"Ativo: {i.status}"
-            )
+        return f'{str_name} | {str_category} | {self.status}'
 
     @property
     def name(self):
         return self._name
-
-    @property
-    def category(self):
-        return self._category
-
-    @property
-    def status(self):
-        return '☑' if self._status else '☐'
-
+    
     @name.setter
     def name(self, name=''):
         if not isinstance(name, str):
@@ -44,6 +28,10 @@ class Restaurante:
         else:
             self._name = name.title()
 
+    @property
+    def category(self):
+        return self._category
+    
     @category.setter
     def category(self, category=''):
         if not isinstance(category, str):
@@ -51,5 +39,31 @@ class Restaurante:
         else:
             self._category = category.title()
 
+    @property
+    def status(self):
+        return '☑' if self._status else '☐'
+
+    @classmethod
+    def list_restaurantes(cls):
+        for i in cls.restaurante_list:
+            iname = i._name or 'Sem informação'
+            icategory = i._category or 'Sem informação'
+
+            print(
+                f"Restaurante: {iname} | "
+                f"Categoria: {icategory} | "
+                f"Ativo: {i.status} | "
+                f"Avaliação: {i.average()}"
+            )
+
     def switch_state(self):
         self._status = not self._status
+        
+    def assessment(self, client, notation):
+         assessment = Avaliacao(client, notation)
+         self._assessment_list.append(assessment)
+
+    
+    def average(self):
+        return Avaliacao.average_rating(self)
+
